@@ -6,7 +6,7 @@ const Header = () => {
     if (!sessionData?.user) return null;
     const onSignOut = (): Promise<undefined> => signOut();
     return (
-        <div className='flex flex-row ml-2 mt-2'>
+        <div className='flex flex-row m-4 md:m-5'>
             <h1 className="flex-grow font-extrabold tracking-tight text-white text-3xl">
                 Tweet<span className="text-[hsl(211,100%,70%)]">Thread</span>
             </h1>
