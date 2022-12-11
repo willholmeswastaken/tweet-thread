@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 import { useState } from "react";
 import Composer from "../components/Composer";
@@ -14,6 +15,7 @@ export const getServerSideProps = requireAuth(async (_) => {
 }, 'dashboard');
 
 const Dashboard: NextPage = () => {
+    const { data: sessionData } = useSession();
     const [threadText, setThreadText] = useState<string>('');
     const [view, setView] = useState<ThreadView>('compose');
     const tweets = useMemo<Array<string>>(() => tweetSplitter(threadText), [threadText]);
@@ -27,6 +29,7 @@ const Dashboard: NextPage = () => {
 
     return (
         <div className="flex flex-col">
+            <button onClick={() => console.log(sessionData)}>clikc me</button>
             <div className="flex flex-col md:flex-row mt-4">
                 <div className={`p-4 w-full flex-1 ${view === 'compose' ? 'flex' : 'hidden'} md:flex`}>
                     <Composer onChange={onThreadTextUpdate} value={threadText} />
