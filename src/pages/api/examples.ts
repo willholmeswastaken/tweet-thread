@@ -13,6 +13,12 @@ const examples = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
+  await prisma.account.delete({
+    where: {
+      id: examples!.id,
+    },
+  });
+
   res.status(200).json(examples);
 };
 
