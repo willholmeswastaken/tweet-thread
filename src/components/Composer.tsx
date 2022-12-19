@@ -14,7 +14,7 @@ const Composer = ({ onChange, value }: ComposerProps) => {
             value={value}
             name="tweet-content"
             id="tweet-content"
-            className="w-full h-full rounded-2xl focus:outline-[#1da1f2] caret-black p-6"
+            className="w-full h-full rounded-2xl focus:outline-[#1da1f2] caret-black p-6 drop-shadow-2xl"
             placeholder='Start composing your tweet here...'
             cols={30}
             rows={10} />
