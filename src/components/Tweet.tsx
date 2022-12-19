@@ -14,7 +14,7 @@ const Tweet = ({ tweet, hasTrailingTweet }: TweetProps) => {
                     alt="profile image"
                     className="rounded-full w-16 h-16" />
                 {
-                    hasTrailingTweet && <div className="h-full bg-blue-500 w-1 "></div>
+                    hasTrailingTweet && <div className="h-full bg-[#1da1f2] w-1 "></div>
                 }
             </div>
             <div className="flex-1">

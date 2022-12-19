@@ -22,6 +22,9 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  session: {
+    maxAge: 86000,
+  },
 
   /*
   * Sample response from Twitter OAuth 2.0:
@@ -65,6 +68,40 @@ export const authOptions: NextAuthOptions = {
         session.user.id = user.id;
       }
       return session;
+    },
+    async signIn({ user, account, profile, email, credentials }) {
+      if (user) {
+        try {
+          const userFromDatabase = await prisma.account.findFirst({
+            where: {
+              userId: user.id,
+            },
+          });
+          if (userFromDatabase && account !== null) {
+            await prisma.account.update({
+              where: {
+                provider_providerAccountId: {
+                  provider: account.provider,
+                  providerAccountId: account.providerAccountId,
+                },
+              },
+              data: {
+                access_token: account.access_token,
+                expires_at: account.expires_at,
+                id_token: account.id_token,
+                refresh_token: account.refresh_token,
+                session_state: account.session_state,
+                scope: account.scope,
+              },
+            });
+          }
+        } catch (err) {
+          if (err instanceof Error) {
+            console.error(err.message);
+          }
+        }
+      }
+      return true;
     },
   },
   secret: env.NEXTAUTH_SECRET!,
