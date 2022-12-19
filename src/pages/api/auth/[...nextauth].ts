@@ -60,8 +60,7 @@ export const authOptions: NextAuthOptions = {
   }
   */
   callbacks: {
-    session({ session, user, token }) {
-      console.log("TOKEN FROM CALLBACK", token);
+    session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
       }
