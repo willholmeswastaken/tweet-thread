@@ -1,6 +1,7 @@
 import { Transition, Dialog } from '@headlessui/react';
 import React, { Fragment, useMemo } from 'react'
 import type TweetPublishStatus from '../types/TweetPublishStatus'
+import { CheckBadgeIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 
 type ThreadPublishModalProps = {
     tweetPublishStatus: TweetPublishStatus;
@@ -39,6 +40,12 @@ const ThreadPublishModal = ({ tweetPublishStatus, tweetThreadUrl, isOpen, onClos
                                 leaveTo="opacity-0 scale-95"
                             >
                                 <Dialog.Panel className="flex flex-col items-center w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+
+                                    {
+                                        threadPublished
+                                            ? <CheckBadgeIcon className='w-20 h-20 text-green-500' />
+                                            : <ExclamationCircleIcon className='w-20 h-20 text-red-500' />
+                                    }
                                     <Dialog.Title
                                         as="h3"
                                         className="text-lg font-medium leading-6 text-gray-900"
@@ -46,7 +53,7 @@ const ThreadPublishModal = ({ tweetPublishStatus, tweetThreadUrl, isOpen, onClos
                                         Thread Publish {threadPublished ? 'Successful' : 'Failed'}!
                                     </Dialog.Title>
                                     <div className="mt-2">
-                                        <p className="text-sm text-gray-500">
+                                        <p className="text-sm text-center text-gray-500">
                                             {
                                                 threadPublished ? 'Click the button below to view your thread!' : 'Oops, something went wrong. Please try again, if this fails then log out and log back in.'
                                             }

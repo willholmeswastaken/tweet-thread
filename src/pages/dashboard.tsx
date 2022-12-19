@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Head from "next/head";
 import { useCallback, useMemo } from "react";
 import Composer from "../components/Composer";
 import DesktopButtons from "../components/DesktopButtons";
@@ -17,6 +18,7 @@ export const getServerSideProps = requireAuth(async (_) => {
 const Dashboard: NextPage = () => {
     const state = useTweetStore();
     const tweetMutation = trpc.twitter.createTweetThread.useMutation();
+
     const isLoading = useMemo<boolean>(() => state.tweetPublishStatus === 'publishing', [state.tweetPublishStatus]);
     const showModal = useMemo<boolean>(() => (['published', 'failed'] as Array<TweetPublishStatus>).includes(state.tweetPublishStatus), [state.tweetPublishStatus]);
     const isPublishable = useMemo<boolean>(() => state.tweetsAsSingularString.length > 0, [state.tweetsAsSingularString]);
@@ -27,17 +29,23 @@ const Dashboard: NextPage = () => {
             state.resetPublishStatus();
         }
     }, [state]);
+
     const onThreadTextUpdate = (newThreadText: string): void => state.setTweets(newThreadText);
-    const onPreviewSelected = () => state.setView('preview');
-    const onComposeSelected = () => state.setView('compose');
-    const onPublishSelected = async () => await state.publishTweets(async () => {
+    const onPreviewSelected = (): void => state.setView('preview');
+    const onComposeSelected = (): void => state.setView('compose');
+    const onPublishSelected = async (): Promise<void> => await state.publishTweets(async () => {
         const tweetThreadUrl = await tweetMutation.mutateAsync({ tweets: state.tweets });
         return tweetThreadUrl;
     });
-    const onResetSelected = () => state.reset();
+    const onResetSelected = (): void => state.reset();
 
     return (
         <>
+            <Head>
+                <title>Tweet Thread - Dashboard</title>
+                <meta name="description" content="Twitter thread creation and publishing made easy." />
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
             <div className="flex flex-col">
                 <div className="flex flex-col md:flex-row mt-4">
                     <div className={`p-4 w-full flex-1 ${state.activeView === 'compose' ? 'flex' : 'hidden'} md:flex`}>
